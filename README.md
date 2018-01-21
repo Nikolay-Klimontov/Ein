@@ -1,2 +1,2 @@
 # Ein
-Small real-time rendering engine that wants to be a small game engine
+Small game engine that wants to be a big game
