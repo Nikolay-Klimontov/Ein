@@ -21,8 +21,10 @@ namespace Rendering
         {
             GLuint vao_id = 0, vbo_id = 0;
 
-            GLuint count;
+            GLuint count = 0;
         public:
+
+            using pointer = std::shared_ptr<Geometry>;
 
             explicit Geometry(const std::vector<Ein::Vertex>& vertices) noexcept;
 

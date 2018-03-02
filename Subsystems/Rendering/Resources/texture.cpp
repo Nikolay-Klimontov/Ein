@@ -7,6 +7,8 @@
 
 #include "texture.hpp"
 
+using namespace Rendering::Resources;
+
 Texture::Texture(GLuint width, GLuint height, GLubyte* data, GLenum format) noexcept
 {
     glGenTextures(1, &uid);

@@ -1,26 +1,38 @@
-cmake_minimum_required(VERSION 3.9)
-set(PROJECT_NAME ein)
-project(${PROJECT_NAME})
+CMAKE_MINIMUM_REQUIRED(VERSION 3.9)
+SET(PROJECT_NAME ein)
+PROJECT(${PROJECT_NAME})
 
-add_subdirectory(Thirdparty)
+ADD_SUBDIRECTORY(Thirdparty)
 
-set(CMAKE_CXX_STANDARD 17)
+SET(CMAKE_CXX_STANDARD 17)
 #--------------------------------------------------------------
-set(RENDERING_SUBYSTEM_PATH Subsystems/Rendering)
+SET(RENDERING_SUBYSTEM_PATH Subsystems/Rendering)
 
-set(RENDERING_SUBYSTEM
-        ${RENDERING_SUBYSTEM_PATH}/Resources/shaders.hpp
-        ${RENDERING_SUBYSTEM_PATH}/Resources/shaders.cpp Subsystems/Rendering/Resources/geometry.cpp Subsystems/Rendering/Resources/geometry.hpp Subsystems/Rendering/Resources/texture.cpp Subsystems/Rendering/Resources/texture.hpp Subsystems/Rendering/camera.cpp Subsystems/Rendering/camera.hpp)
+SET(RENDERING_SUBYSTEM
+    ${RENDERING_SUBYSTEM_PATH}/Resources/shaders.hpp
+    ${RENDERING_SUBYSTEM_PATH}/Resources/shaders.cpp
+    ${RENDERING_SUBYSTEM_PATH}/Resources/geometry.cpp
+    ${RENDERING_SUBYSTEM_PATH}/Resources/geometry.hpp
+    ${RENDERING_SUBYSTEM_PATH}/Resources/texture.cpp
+    ${RENDERING_SUBYSTEM_PATH}/Resources/texture.hpp
+    ${RENDERING_SUBYSTEM_PATH}/camera.cpp
+    ${RENDERING_SUBYSTEM_PATH}/camera.hpp
+   )
 #--------------------------------------------------------------
-set(UTILITY_PATH Utility)
+SET(UTILITY_PATH Utility)
 
-set(UTILITY
+SET(UTILITY
     ${UTILITY_PATH}/logger.hpp
-    ${UTILITY_PATH}/templates.hpp Utility/readers.hpp Utility/readers.cpp Utility/GL.hpp Utility/GLFW.hpp Utility/types.hpp)
+    ${UTILITY_PATH}/templates.hpp
+    ${UTILITY_PATH}/readers.hpp
+    ${UTILITY_PATH}/readers.cpp
+    ${UTILITY_PATH}/GL.hpp
+    ${UTILITY_PATH}/GLFW.hpp
+    ${UTILITY_PATH}/types.hpp )
 
-include_directories( ${UTILITY_PATH})
+INCLUDE_DIRECTORIES(${UTILITY_PATH})
 #--------------------------------------------------------------
-set(SOURCES main.cpp)
+SET(SOURCES main.cpp)
 
-add_executable(${PROJECT_NAME} ${SOURCES} ${RENDERING_SUBYSTEM} ${UTILITY})
-target_link_libraries(${PROJECT_NAME} ${GLFW_STATIC_LIBRARIES} glad stbimage)
+ADD_EXECUTABLE(${PROJECT_NAME} ${SOURCES} ${RENDERING_SUBYSTEM} ${UTILITY})
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${GLFW_STATIC_LIBRARIES} glad stbimage)

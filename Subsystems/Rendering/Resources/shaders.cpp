@@ -72,7 +72,7 @@ void Shader::mark_to_delete() noexcept
     }
 }
 
-Shader_program::Shader_program(const std::vector<Shader_ptr>& shaders)
+Shader_program::Shader_program(const std::vector<Shader::pointer>& shaders)
 {
     if(shaders.empty())
     {

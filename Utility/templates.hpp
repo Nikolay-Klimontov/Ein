@@ -7,11 +7,12 @@
 #ifndef EIN_TEMPALTES_HPP
 #define EIN_TEMPALTES_HPP
 
+#include <memory>
 
 namespace Utils
 {
     template<typename T>
-    class Singleton : private T
+    class Singleton
     {
     public:
 
@@ -28,9 +29,6 @@ namespace Utils
 
         Singleton() = default;
     };
-
-#define PREVENT_COPY(X) X(const X&) = delete; \
-    X & operator=(const X&) = delete;
 
 
 }

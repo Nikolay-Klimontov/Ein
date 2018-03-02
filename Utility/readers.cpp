@@ -9,46 +9,57 @@
 #include <stb_image.h>
 
 
-std::string Utils::load_text(const std::string& path) noexcept
+namespace Utils
 {
-    std::ifstream t(path);
-
-    if(t.fail())
+    std::string load_text(const std::string &path) noexcept
     {
-        LOG_FAILED_TO_READ(path);
-        return std::string();
+        std::ifstream t(path);
+
+        if (t.fail())
+        {
+            LOG_FAILED_TO_READ(path);
+            return std::string();
+        }
+
+        std::string str;
+
+        t.seekg(0, std::ios::end);
+        str.reserve(t.tellg());
+        t.seekg(0, std::ios::beg);
+
+        str.assign((std::istreambuf_iterator<char>(t)),
+                   std::istreambuf_iterator<char>());
+
+        LOG_FILE_WAS_READ(path);
+        return std::move(str);
     }
 
-    std::string str;
+    Ein::Image load_image(const std::string &path) noexcept
+    {
+        Ein::Image img;
 
-    t.seekg(0, std::ios::end);
-    str.reserve(t.tellg());
-    t.seekg(0, std::ios::beg);
 
-    str.assign((std::istreambuf_iterator<char>(t)),
-            std::istreambuf_iterator<char>());
+        stbi_set_flip_vertically_on_load(true);
+        img.data = stbi_load(path.c_str(), &img.width, &img.height, &img.channels, 0);
 
-    LOG_FILE_WAS_READ(path);
-    return std::move(str);
+        if (img.channels == 1)
+            img.color_format = GL_RED;
+        else if (img.channels == 3)
+            img.color_format = GL_RGB;
+        else if (img.channels == 4)
+            img.color_format = GL_RGBA;
+
+        return img;
+    }
+
+    void free_image(Ein::Image &img) noexcept
+    {
+        stbi_image_free(img.data);
+
+        img.width = 0;
+        img.height = 0;
+        img.channels = 0;
+        img.data = nullptr;
+    }
+
 }
-
-Ein::Image Utils::load_image(const std::string& path) noexcept
-{
-    Ein::Image img;
-
-    stbi_set_flip_vertically_on_load(true);
-    img.data = stbi_load(path.c_str(), &img.width, &img.height, &img.channels, 0);
-
-    return img;
-}
-
-void Utils::free_image(Ein::Image& img) noexcept
-{
-    stbi_image_free(img.data);
-
-    img.width =0;
-    img.height =0;
-    img.channels = 0;
-    img.data = nullptr;
-}
-

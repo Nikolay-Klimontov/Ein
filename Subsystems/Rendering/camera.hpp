@@ -12,23 +12,37 @@
 
 class Camera
 {
-    glm::vec3 position;
+    glm::dvec3 pos   = glm::dvec3(0.0, 0.0,  0.0);
+    glm::dvec3 front = glm::dvec3(0.0, 0.0, -1.0);
+    glm::dvec3 up    = glm::dvec3(0.0, 1.0,  0.0);
 
-    glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
-    glm::vec3 right ;
+    double pitch = 0.0, yaw = 0.0;
 
-    float pitch_angle = 0.0f;
-    float yaw_angle = 0.0f;
+    const double velocity = 1.0;
+
+    glm::mat4 proj;
 
 public:
-    Camera(const glm::vec3& position, const glm::vec3& direction) noexcept;
 
-    void move(glm::vec3 direction, float velocity, float dt) noexcept;
+    //TODO: a bit mask or a normalized vector instead of this
+    enum class Direction{forward, backward, left, right, up, down};
 
-    void pitch(float angle) noexcept;
-    void yaw(float angle) noexcept;
+    Camera(const glm::dvec3& position, const glm::dvec3& direction, const glm::mat4& projection) noexcept;
+
+    void move(Direction direction, double dt) noexcept;
+    void rotate(double yaw, double pitch) noexcept;
+
+    glm::vec3 position() const noexcept
+    {
+        return  glm::vec3(pos.x, pos.y, pos.z);
+    }
 
     glm::mat4 view() const noexcept;
+
+    glm::mat4 projection() const noexcept
+    {
+        return proj;
+    };
 };
 
 #endif //EIN_CAMERA_HPP

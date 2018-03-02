@@ -11,24 +11,33 @@
 #include <GL.hpp>
 #include <string>
 #include <types.hpp>
+#include <templates.hpp>
 
-class Texture final
+namespace Rendering
 {
-    GLuint uid;
-
-public:
-
-    Texture(GLuint width, GLuint heigth, GLubyte* data, GLenum format) noexcept;
-
-    Texture(const Ein::Image& image) noexcept;
-
-    GLuint id() const noexcept
+    namespace Resources
     {
-        return uid;
+        class Texture final
+        {
+            GLuint uid;
+
+        public:
+
+            using pointer = std::shared_ptr<Texture>;
+
+            Texture(GLuint width, GLuint heigth, GLubyte *data, GLenum format) noexcept;
+
+            Texture(const Ein::Image &image) noexcept;
+
+            GLuint id() const noexcept
+            {
+                return uid;
+            }
+
+            ~Texture();
+
+        };
     }
-
-    ~Texture();
-
-};
+}
 
 #endif //EIN_TEXTURE_HPP

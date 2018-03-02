@@ -11,6 +11,8 @@
 #include <GL.hpp>
 #include <vector>
 #include <memory>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace Rendering
 {
@@ -22,7 +24,7 @@ namespace Rendering
             GLuint uid = 0;
         public:
 
-            PREVENT_COPY(Shader)
+            using pointer = std::shared_ptr<Shader>;
 
             explicit Shader(const std::string& sources, GLenum type);
 
@@ -38,17 +40,51 @@ namespace Rendering
             void mark_to_delete() noexcept;
         };
 
-        using Shader_ptr = std::shared_ptr<Shader>;
-
         //TODO: figure out how to do this cache local in FUTURE
         class Shader_program final
         {
             GLuint uid = 0;
 
-        public:
-            PREVENT_COPY(Shader_program)
 
-            explicit Shader_program(const std::vector<Shader_ptr>& shaders);
+        public:
+
+            //TODO: make this template
+            struct Var
+            {
+                GLint loc;
+
+            public:
+
+                void operator= (GLint val) noexcept
+                {
+                    //assert(type == GL_FLOAT_VEC3);
+
+                    glUniform1iv(loc, 1, &val);
+                }
+
+                void operator= (glm::vec3 val) noexcept
+                {
+                    //assert(type == GL_FLOAT_VEC3);
+
+                    glUniform3fv(loc, 1, glm::value_ptr(val));
+                }
+                void operator= (glm::vec4 val) noexcept
+                {
+                    //assert(type == GL_FLOAT_VEC4);
+
+                    glUniform4fv(loc, 1, glm::value_ptr(val));
+                }
+                void operator= (const glm::mat4& val) noexcept
+                {
+                    //assert(type == GL_FLOAT_MAT4);
+
+                    glUniformMatrix4fv(loc,  1, GL_FALSE, glm::value_ptr(val));
+                }
+            };
+
+            using pointer = std::shared_ptr<Shader_program>;
+
+            explicit Shader_program(const std::vector<Shader::pointer>& shaders);
 
             //! @returns 0 in case of an error during resource initialization, resource id otherwise
             GLuint id() const noexcept
@@ -56,19 +92,16 @@ namespace Rendering
                 return uid;
             }
 
+            Var variable(const std::string& name) noexcept
+            {
+                return {glGetUniformLocation(uid, name.c_str())};
+            }
+
             ~Shader_program();
 
         private:
             //! @brief OpenGL driver mark this resource for deletion
             void mark_to_delete() noexcept;
-        };
-
-        //TODO: figure out how to make this
-        struct Variable
-        {
-            GLchar* name;
-            GLint location;
-            GLenum type;
         };
 
     }

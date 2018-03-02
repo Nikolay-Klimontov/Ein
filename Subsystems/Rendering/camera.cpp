@@ -7,36 +7,59 @@
 
 #include <algorithm>
 #include <glm/gtc/matrix_transform.hpp>
+#include <iostream>
 #include "camera.hpp"
 
-Camera::Camera(const glm::vec3& position, const glm::vec3& direction) noexcept
+Camera::Camera(const glm::dvec3& position, const glm::dvec3& center, const glm::mat4& projection) noexcept
 {
+    pos = position;
+    front = glm::normalize(center - position);
+
+    pitch = glm::degrees(asin(front.y));
+    yaw   = glm::degrees(acos(front.x * cos(asin(front.y))));
+
+    proj = projection;
+}
+
+void Camera::move(Direction direction, double dt) noexcept
+{
+
+    switch (direction)
+    {
+        case Direction::forward:
+            pos += front * velocity * dt;
+            break;
+        case Direction::backward:
+            pos -= front * velocity * dt;
+            break;
+        case Direction::left:
+            pos -= glm::normalize(glm::cross(front, up)) * velocity * dt;
+            break;
+        case Direction::right:
+            pos += glm::normalize(glm::cross(front, up)) * velocity * dt;
+            break;
+        case Direction::up:
+            pos += up * velocity * dt;
+            break;
+        case Direction::down:
+            pos -= up * velocity * dt;
+            break;
+    }
 
 }
 
-
-void Camera::move(glm::vec3 direction, float velocity, float dt) noexcept
+void Camera::rotate(double yaw, double pitch) noexcept
 {
-    direction.x = direction.x * cosf(yaw_angle) * cosf(pitch_angle);
-    direction.z = direction.z * sinf(yaw_angle) * cosf(pitch_angle);
-    direction.y = direction.y * sinf(pitch_angle);
+    this->yaw += yaw;
+    this->pitch = std::max(-89.0, std::min((this->pitch + pitch), 89.0));
 
-    position += direction*velocity*dt;
-}
-
-void Camera::pitch(float angle) noexcept
-{
-    pitch_angle +=angle;
-
-    pitch_angle = std::min(89.0f, std::max(-89.0f, pitch_angle));
-}
-
-void Camera::yaw(float angle) noexcept
-{
-    yaw_angle += angle;
+    front = glm::normalize(glm::dvec3(cos(glm::radians(this->yaw)) * cos(glm::radians(this->pitch)),
+                                      sin(glm::radians(this->pitch)),
+                                      sin(glm::radians(this->yaw)) * cos(glm::radians(this->pitch))));
 }
 
 glm::mat4 Camera::view() const noexcept
 {
-    return glm::mat4();
+    return glm::lookAt(pos, pos + front, up);
 }
+
