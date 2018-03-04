@@ -8,15 +8,15 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
-out vec3 position;
-out vec3 normal;
+out vec4 position;
+out vec4 normal;
 out vec2 tex_coord;
 
 void main()
 {
-	position  = vec3(model* vec4(v_position, 1.0));
-	normal    = mat3(transpose(inverse(model))) * v_normal; //TODO: MOVE THIS OUT TO CPU
+	position  = model* vec4(v_position, 1.0);
+	normal    = transpose(inverse(model)) * vec4(v_normal, 0.0f); //TODO: MOVE MATRIX COMPUTATION OUT TO CPU
     tex_coord = v_tex_coord;
 
-	gl_Position = projection*view*vec4(position, 1.0);
+	gl_Position = projection*view*position;
 }

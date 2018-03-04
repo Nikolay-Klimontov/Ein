@@ -51,7 +51,7 @@ struct Object
 {
     glm::vec3 position = {0.0f, 0.0f, 0.0f};
     glm::vec3 scale = {1.0f, 1.0f, 1.0f};
-    glm::vec4 rotation = {0.0f, 1.0f, 0.0f, 0.0f};//{xyz, degrees} //TODO: make this glm::quat
+    glm::vec4 rotation = {1.0f, 0.0f, 0.0f, 60.0f};//{xyz, degrees} //TODO: make this glm::quat
 
     Geometry::pointer geometry = nullptr;
     Shader_program::pointer program = nullptr;
@@ -67,9 +67,8 @@ template<typename T>
 void export_common_data(T &object)
 {
     glm::mat4 model;
-    model = glm::rotate(model, glm::radians(object.rotation.w),
-                        glm::vec3(object.rotation.x, object.rotation.y, object.rotation.z));
     model = glm::translate(model, object.position);
+    model = glm::rotate(model, glm::radians(object.rotation.w), glm::vec3(object.rotation.x, object.rotation.y, object.rotation.z));
     model = glm::scale(model, object.scale);
 
     object.program->variable("model") = model;
@@ -194,7 +193,7 @@ int main()
     Light_source point_light;
     point_light.geometry = geom;
     point_light.position = {1.0f, 0.7f, -7.0f};
-    point_light.color = {0.5, 0.7, 0.7};
+    point_light.color = {1.0, 1.0, 1.0};
     point_light.program = pr2;
 
     glEnable(GL_DEPTH_TEST);
@@ -244,7 +243,7 @@ int main()
         draw_object(obj, point_light);
 
         // you spin me right round!
-        point_light.position = {4*sin(glfwGetTime()), 4*sin(0.5*glfwGetTime()), cos(glfwGetTime())};
+        point_light.position = {sin(glfwGetTime()), 0.6f, cos(glfwGetTime())};
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
         glfwSwapBuffers(window);
