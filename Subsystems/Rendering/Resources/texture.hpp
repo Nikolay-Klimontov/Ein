@@ -10,6 +10,7 @@
 
 #include <GL.hpp>
 #include <string>
+#include <memory>
 #include <types.hpp>
 #include <templates.hpp>
 
@@ -19,15 +20,15 @@ namespace Rendering
     {
         class Texture final
         {
+            std::string name;
             GLuint uid;
 
         public:
 
             using pointer = std::shared_ptr<Texture>;
 
-            Texture(GLuint width, GLuint heigth, GLubyte *data, GLenum format) noexcept;
-
-            Texture(const Ein::Image &image) noexcept;
+            Texture(const std::string& name, Ein::Image2D::pointer image) noexcept;
+            explicit Texture(const std::string& name, GLuint width, GLuint height, GLubyte *data, GLenum format) noexcept;
 
             GLuint id() const noexcept
             {

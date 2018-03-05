@@ -29,7 +29,7 @@ void main()
 // specular lighting
     vec4 cam_dir = normalize(vec4(camera_position, 1.0f) - position);
     vec4 reflect_dir = reflect(-light_dir, norm);
-    float spec = pow(max(dot(cam_dir, reflect_dir), 0.0), 2.0);
+    float spec = pow(max(dot(cam_dir, reflect_dir), 0.0), 64.0);
     vec4 specular = diff * spec * texture(specular_map, tex_coord);
 
     vec4 light_color = diffuse + specular + ambient * texture(diffuse_map, tex_coord);

@@ -15,36 +15,44 @@ namespace Rendering
 {
     namespace Resources
     {
-        //TODO: figure out how to do this cache local in FUTURE
-        //TODO: figure out how to minimize VAO switching cuz it's costly
-        class Geometry
+        //! @brief Geometry buffer class
+        class Geometry final
         {
-            GLuint vao_id = 0, vbo_id = 0;
+            GLuint vao_id = 0, vbo_id = 0, ebo_id = 0;
 
-            GLuint count = 0;
+            GLuint v_count = 0;
+            GLuint i_count = 0;
         public:
 
             using pointer = std::shared_ptr<Geometry>;
 
-            explicit Geometry(const std::vector<Ein::Vertex>& vertices) noexcept;
+            Geometry(const std::vector<Ein::Vertex>& vertices) noexcept;
+            Geometry(const std::vector<Ein::Vertex>& vertices, const std::vector<GLuint>& indices) noexcept;
 
             GLuint vao() const noexcept
             {
                 return vao_id;
             }
 
-            //TODO: do i need this?
-            GLuint vbo() const noexcept
+            bool indexed() const noexcept
             {
-                return vbo_id;
+                return ebo_id != 0;
             }
 
             GLuint vertex_count() const noexcept
             {
-                return count;
+                return v_count;
+            }
+
+            GLuint index_count() const noexcept
+            {
+                return i_count;
             }
 
             ~Geometry();
+        private:
+
+            void configure_layout() const noexcept;
         };
     }
 }

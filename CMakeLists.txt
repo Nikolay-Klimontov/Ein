@@ -28,7 +28,8 @@ SET(UTILITY
     ${UTILITY_PATH}/readers.cpp
     ${UTILITY_PATH}/GL.hpp
     ${UTILITY_PATH}/GLFW.hpp
-    ${UTILITY_PATH}/types.hpp )
+    ${UTILITY_PATH}/types.hpp
+    ${UTILITY_PATH}/types.cpp)
 
 INCLUDE_DIRECTORIES(${UTILITY_PATH})
 #--------------------------------------------------------------

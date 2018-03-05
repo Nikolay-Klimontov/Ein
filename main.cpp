@@ -175,14 +175,9 @@ int main()
                     {{-0.5f, 0.5f,  -0.5f}, {0.0f,  1.0f,  0.0f},  {0.0f, 1.0f}}
             }));
 
+    Texture::pointer diffuse = std::make_shared<Texture>("diffuse", std::make_shared<Ein::Image2D>("/home/nikolay/Ein/Resources/Textures/container2.png"));
+    Texture::pointer specular = std::make_shared<Texture>("specular", std::make_shared<Ein::Image2D>("/home/nikolay/Ein/Resources/Textures/container2_specular.png"));
 
-    auto image = Utils::load_image("/home/nikolay/Ein/Resources/Textures/container2.png");
-    Texture::pointer diffuse = std::make_shared<Texture>(image);
-    Utils::free_image(image);
-
-    auto image2 = Utils::load_image("/home/nikolay/Ein/Resources/Textures/container2_specular.png");
-    Texture::pointer specular = std::make_shared<Texture>(image2);
-    Utils::free_image(image2);
 
     Object obj;
     obj.diffuse = diffuse;
@@ -244,6 +239,7 @@ int main()
 
         // you spin me right round!
         point_light.position = {sin(glfwGetTime()), 0.6f, cos(glfwGetTime())};
+        obj.rotation.w =  glfwGetTime()*5;
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
         glfwSwapBuffers(window);

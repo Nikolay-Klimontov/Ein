@@ -15,9 +15,6 @@ namespace Utils
 {
     std::string load_text(const std::string& path) noexcept;
 
-    //TODO: rewrite this shit
-    Ein::Image load_image(const std::string& path) noexcept;
-    void       free_image(Ein::Image& img) noexcept;
 }
 
 #endif //EIN_READERS_HPP

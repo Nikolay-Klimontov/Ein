@@ -9,7 +9,7 @@
 
 using namespace Rendering::Resources;
 
-Texture::Texture(GLuint width, GLuint height, GLubyte* data, GLenum format) noexcept
+Texture::Texture(const std::string& name, GLuint width, GLuint height, GLubyte* data, GLenum format) noexcept
 {
     glGenTextures(1, &uid);
     glBindTexture(GL_TEXTURE_2D, uid);
@@ -21,6 +21,7 @@ Texture::Texture(GLuint width, GLuint height, GLubyte* data, GLenum format) noex
     // export pixel data to gpu
     glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
     glGenerateMipmap(GL_TEXTURE_2D);
+    this->name = name;
 }
 
 Texture::~Texture()
@@ -28,7 +29,8 @@ Texture::~Texture()
     glDeleteTextures(1, &uid);
 }
 
-Texture::Texture(const Ein::Image& image) noexcept:
-    Texture(image.width, image.height, image.data, image.color_format)
+Texture::Texture(const std::string &name, Ein::Image2D::pointer image) noexcept
+    :Texture(name, image->width(), image->height(), image->data(), image->color_format())
 {
+
 }

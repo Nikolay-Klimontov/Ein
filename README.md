@@ -38,7 +38,7 @@ There is no limitations or restriction except time and hardware
 NOTE: Somewhere on this list should be "completely rewrite this shit". But i don't know where it should be.
 
 ## Tools
-“We had two importers, seventy-five various AI modules, five high powered resource redactors, a scripting module half full of cool stuff, and a whole galaxy of multi-colored console utilities for tasks of any kind... and also a quart of tequila, a quart of rum, a case of Budweiser, a pint of raw ether and two dozen amyls.
+“We had two importers, seventy-five various AI modules, five high powered resource redactors, a scripting module half full of cool stuff, and a whole galaxy of multi-colored console utilities for tasks of any kind...
 Not that we needed all that for the game, but once you get locked into a serious game development, the tendency is to push it as far as you can.”
 ### TODO:
 0. TBD 
