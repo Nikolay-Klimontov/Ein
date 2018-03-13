@@ -9,11 +9,11 @@ This is a simple learning project, don't expect to see a "rocket science". But t
 Now you can draw something with
 ### Forward rendering
 The easiest way to draw something
-### Deferred shading
+### Deferred shading (Active development)
 Not as easy as the first one. But hey, less light calculations
-### PBR
+### PBR (Leraning concepts)
 Or some sort of...
-### Instanced rendering
+### Instanced rendering (Starts shortly)
 When you need a bunch of instances of an object on the screen 
 
 # What next 
